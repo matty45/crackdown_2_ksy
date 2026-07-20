@@ -39,8 +39,7 @@ types:
             'chunk_type::resource_cache_global': res_cache_global
             'chunk_type::resource_cache_level': res_cache_level
             'chunk_type::embedded_asset': embedded_asset
-
-            _: chunk_body_raw
+            'chunk_type::entity': entity
 
   chunk_header:
     doc: 12-byte on-disk chunk header.
@@ -53,12 +52,7 @@ types:
       - id: version
         type: u4
         doc: Packed version + build number
-
-  chunk_body_raw:
-    seq:
-      - id: data
-        size: _parent.header.length
-
+        
   class_registry:
     doc: |
       A chunk containing a list of classes that the dff uses.
@@ -187,15 +181,15 @@ types:
     doc: |
       An game file/asset fully located inside of the dff.
     seq:
-      - id: hdr_size
+      - id: len_header
         type: u4
       - id: header
-        size: hdr_size
+        size: len_header
         type: embedded_asset_header
-      - id: data_size
+      - id: len_data
         type: u4
       - id: data
-        size: data_size
+        size: len_data
         doc: Nested RenderWare stream payload.
         
   embedded_asset_header:
@@ -224,7 +218,59 @@ types:
       - id: extra
         size-eos: true
         doc: Remaining param bytes (u32 extra and any trailing padding).
+  
+  entity:
+    doc: |
+      This chunk is used to tell the game engine to place an entity with specified attributes.
+      What class to spawn, should it be spawned in this build of the game, 
+      what class specific attributes have been set for it, etc.
+    seq:
+      - id: pad
+        type: u4
+      - id: data_config_mask_lo
+        type: u4
+      - id: data_config_mask_hi
+        type: u4
+      - id: packet
+        size: _parent.header.length - 12
+        type: attribute_packet
+    instances:
+      data_config_mask:
+        value: data_config_mask_hi * 0x100000000 + data_config_mask_lo
+        doc: |
+          I believe this is used by the engine to selectively ignore certain entities 
+          to create depending on the engines build type. (debug, release, etc) 
         
+  attribute_packet:
+    seq:
+      - id: entries
+        type: packet_entry
+        repeat: eos
+        
+  packet_entry:
+    seq:
+      - id: size
+        type: u4
+        doc: Total size of this record (header + data), 0 terminates chain.
+      - id: type
+        type: u4
+        enum: packet_entry_type
+      - id: data
+        size: size - 8
+        type:
+          switch-on: type
+          cases:
+            'packet_entry_type::instance_guid': guid
+            'packet_entry_type::class_name': packet_str # The class of the entity to spawn.
+            'packet_entry_type::attribute_section': packet_str # What will handle the settings/attributes for this class.
+        if: size != 0
+          
+  packet_str:
+    seq:
+      - id: value
+        type: strz
+        encoding: ASCII
+
   guid:
     doc: 16 byte guid
     seq:
@@ -244,8 +290,14 @@ types:
         repeat-expr: 6
 enums:
   chunk_type:
+    0x704: entity
     0x716: embedded_asset
     0x71c: class_registry
     0xbadcab01: resource_catalogue
     0xbadcab02: resource_cache_global
     0xbadcab03: resource_cache_level
+    
+  packet_entry_type:
+    0x20000000: class_name
+    0x40000000: instance_guid
+    0x80000000: attribute_section
