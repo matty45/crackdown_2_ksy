@@ -36,6 +36,8 @@ types:
           cases:
             'chunk_type::class_registry': class_registry
             'chunk_type::resource_catalogue': resource_catalogue
+            'chunk_type::resource_cache_global': res_cache_global
+            'chunk_type::resource_cache_level': res_cache_level
 
             _: chunk_body_raw
 
@@ -49,6 +51,7 @@ types:
         type: u4
       - id: version
         type: u4
+        doc: Packed version + build number
 
   chunk_body_raw:
     seq:
@@ -122,8 +125,66 @@ types:
         type: u4
       - id: checksum
         type: u4
+  
+  res_cache_global:
+    doc: Gloval resource cache.
+    seq:
+      - id: num_entries
+        type: u4
+      - id: entries
+        type: res_cache_global_entry
+        repeat: expr
+        repeat-expr: num_entries
+        
+  res_cache_global_entry:
+    seq:
+      - id: block_size
+        type: u4
+      - id: type
+        type: str
+        size: 0x40
+        encoding: UTF-16LE
+        doc: wchar16 type[32].
+        
+  res_cache_level:
+    doc: Level resource cache.
+    seq:
+      - id: num_entries
+        type: u4
+      - id: entries
+        type: res_cache_level_entry
+        repeat: expr
+        repeat-expr: num_entries
+        
+  res_cache_level_entry:
+    seq:
+      - id: type
+        type: str
+        size: 0x40
+        encoding: UTF-16LE
+        doc: wchar16 type[32].
+      - id: block_size
+        type: u4
+      - id: num_configs
+        type: u4
+      - id: configs
+        type: res_cache_config
+        repeat: expr
+        repeat-expr: num_configs
+  
+  res_cache_config:
+    seq:
+      - id: name
+        type: str
+        size: 0x40
+        encoding: UTF-16LE
+        doc: wchar16 cfgName[32].
+      - id: num_blocks
+        type: u4
 
 enums:
   chunk_type:
     0x71c: class_registry
     0xbadcab01: resource_catalogue
+    0xbadcab02: resource_cache_global
+    0xbadcab03: resource_cache_level
