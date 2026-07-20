@@ -38,6 +38,7 @@ types:
             'chunk_type::resource_catalogue': resource_catalogue
             'chunk_type::resource_cache_global': res_cache_global
             'chunk_type::resource_cache_level': res_cache_level
+            'chunk_type::embedded_asset': embedded_asset
 
             _: chunk_body_raw
 
@@ -181,9 +182,69 @@ types:
         doc: wchar16 cfgName[32].
       - id: num_blocks
         type: u4
-
+        
+  embedded_asset:
+    doc: |
+      An game file/asset fully located inside of the dff.
+    seq:
+      - id: hdr_size
+        type: u4
+      - id: header
+        size: hdr_size
+        type: embedded_asset_header
+      - id: data_size
+        type: u4
+      - id: data
+        size: data_size
+        doc: Nested RenderWare stream payload.
+        
+  embedded_asset_header:
+    seq:
+      - id: name_len
+        type: u4
+      - id: name
+        type: str
+        size: name_len
+        encoding: ASCII
+      - id: guid
+        size: 16
+        type: guid
+      - id: type_len
+        type: u4
+      - id: type
+        type: str
+        size: type_len
+        encoding: ASCII
+      - id: str2_len
+        type: u4
+      - id: str2
+        type: str
+        size: str2_len
+        encoding: ASCII
+      - id: extra
+        size-eos: true
+        doc: Remaining param bytes (u32 extra and any trailing padding).
+        
+  guid:
+    doc: 16 byte guid
+    seq:
+      - id: data1
+        type: u4
+      - id: data2
+        type: u2
+      - id: data3
+        type: u2
+      - id: data4
+        type: u1
+      - id: data5
+        type: u1
+      - id: data6
+        type: u1
+        repeat: expr
+        repeat-expr: 6
 enums:
   chunk_type:
+    0x716: embedded_asset
     0x71c: class_registry
     0xbadcab01: resource_catalogue
     0xbadcab02: resource_cache_global
