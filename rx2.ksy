@@ -7,7 +7,8 @@
     endian: be
     imports:
       - rx2_enums
-      - rx2_main_section_types
+      - rx2_sections
+      - rx2_object_types
 
   doc: |
     RX2 format used by Crackdown 2 (Xbox 360).
@@ -97,7 +98,7 @@
       instances:  
         section_manifest:  
           pos: 0x50  
-          type: rx2_main_section_types::arena_section_manifest  
+          type: rx2_sections::arena_section_manifest  
 
     dict_entry:  
       seq:  
@@ -113,20 +114,14 @@
           type: u4  
       instances:  
         resolved_type:  
-          value: _root.arena.section_manifest.offsets[0].value.as<rx2_main_section_types::arena_section_types>.type_codes[type_index]  
+          value: _root.arena.section_manifest.offsets[0].value.as<rx2_sections::arena_section_types>.type_codes[type_index]  
         body:  
           pos: ptr  
           size: size  
           type:  
             switch-on: resolved_type  
             cases:  
-              'rx2_enums::arena_object_type::rwgobjecttype_renderobject': render_object_type  
-              
-    render_object_type:  
-      doc: "Placeholder — real layout of RWGOBJECTTYPE_RENDEROBJECT not yet reverse-engineered"  
-      seq:  
-        - id: raw  
-          size-eos: true
+              'rx2_enums::arena_object_type::rwgobjecttype_renderobject': rx2_object_types::render_object_type  
 
   instances:
     dictionary:

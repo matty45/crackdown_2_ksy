@@ -1,6 +1,6 @@
 meta:
-  id: rx2_main_section_types
-  title: Crackdown 2 RX2 Main Section Types
+  id: rx2_sections
+  title: Crackdown 2 RX2 Sections
   application: Crackdown 2
   file-extension: "rx2"
   license: AGPL-3.0-or-later
