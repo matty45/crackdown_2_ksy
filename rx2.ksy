@@ -121,7 +121,7 @@
           type:  
             switch-on: resolved_type  
             cases:  
-              'rx2_enums::arena_object_type::rwgobjecttype_renderobject': rx2_object_types::render_object_type  
+              'rx2_enums::arena_object_type::rwgobjecttype_raster': rx2_object_types::raster_object_type  
 
   instances:
     dictionary:

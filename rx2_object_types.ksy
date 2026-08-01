@@ -6,11 +6,19 @@ meta:
   license: AGPL-3.0-or-later
   endian: be
   encoding: ASCII
+  imports:
+   - d3d
 
 types:
-  render_object_type:
-    doc: Placeholder — real layout of RWGOBJECTTYPE_RENDEROBJECT not yet reverse-engineered
+  raster_object_type:
     seq:
-      - id: raw
-        size-eos: true  
-  
+      - id: d3d_base_texture
+        type: d3d::d3d_base_texture
+      - id: m_type
+        type: u1
+      - id: face
+        type: u1
+      - id: num_mip_levels
+        type: u1
+      - id: locked
+        type: u1
