@@ -1,7 +1,9 @@
   meta:
-    id: crackdown2_rx2
+    id: arena
     title: Crackdown 2 RX2 Archive Format
-    license: MIT
+    application: Crackdown 2
+    file-extension: rx2
+    license: AGPL-3.0-or-later
     endian: be
 
   doc: |
@@ -113,7 +115,6 @@
           type: u4  
   
     arena_section_subreferences:  
-      adoc: "NEED TO CONFIRM THIS IS CORRECT!!!"  
       seq:  
         - id: type_code  
           type: u4  
@@ -183,7 +184,7 @@
           type: u4  
           enum: arena_object_type
           doc: "Should be RWOBJECTTYPE_SECTIONTYPES (0x10005)"
-        - id: num_entries
+        - id: num_type_codes
           type: u4
           doc: "Number of type codes"
         - id: offset
@@ -193,7 +194,7 @@
           type: u4  
           enum: arena_object_type
           repeat: expr
-          repeat-expr: num_entries
+          repeat-expr: num_type_codes
         
     
     section_ptr:  
@@ -221,7 +222,7 @@
         - id: type_code  
           type: u4  
           enum: arena_object_type  
-        - id: num_entries  
+        - id: num_offsets  
           type: u4  
         - id: pntr_offsets  
           type: u4  
@@ -229,7 +230,7 @@
         - id: offsets  
           type: section_ptr  
           repeat: expr  
-          repeat-expr: num_entries  
+          repeat-expr: num_offsets  
           doc: |  
             Each element's absolute section location is offsets[i].value,  
             computed as ofs + 0x50 (base of arena_section_manifest).  

@@ -4,7 +4,6 @@ meta:
   application: Crackdown 2
   file-extension: dff
   license: AGPL-3.0-or-later
-  ks-version: 0.9
   endian: le
 
 doc: |

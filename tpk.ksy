@@ -2,9 +2,8 @@ meta:
   id: tpk
   title: Crackdown 2 TPK (Texture pack) file
   application: Crackdown 2
-  file-extension: rx2
+  file-extension: tpk
   license: AGPL-3.0-or-later
-  ks-version: 0.9
   endian: be
   
 seq:  
