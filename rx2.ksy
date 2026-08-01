@@ -1,5 +1,5 @@
   meta:
-    id: arena
+    id: rx2
     title: Crackdown 2 RX2 Container Format
     application: Crackdown 2
     file-extension: rx2
