@@ -100,29 +100,33 @@
           type: rx2_main_section_types::arena_section_manifest  
 
     dict_entry:  
-      doc: "20-byte table-of-contents entry (stride = 0x14)"  
       seq:  
         - id: ptr  
           type: u4  
-          doc: "File offset to object data (fixed up to absolute address at runtime)"  
         - id: reloc  
           type: u4  
-          doc: "Saved copy of ptr, written during fixup (runtime use only)"  
         - id: size  
           type: u4  
-          doc: "Size of object data in bytes"  
         - id: align  
           type: u4  
-          doc: "Alignment of object data"  
         - id: type_index  
           type: u4  
       instances:  
+        resolved_type:  
+          value: _root.arena.section_manifest.offsets[0].value.as<rx2_main_section_types::arena_section_types>.type_codes[type_index]  
         body:  
           pos: ptr  
           size: size  
-          valid:  
-            expr: ptr + size <= _root._io.size
-          doc: "Raw object data"
+          type:  
+            switch-on: resolved_type  
+            cases:  
+              'rx2_enums::arena_object_type::rwgobjecttype_renderobject': render_object_type  
+              
+    render_object_type:  
+      doc: "Placeholder — real layout of RWGOBJECTTYPE_RENDEROBJECT not yet reverse-engineered"  
+      seq:  
+        - id: raw  
+          size-eos: true
 
   instances:
     dictionary:
