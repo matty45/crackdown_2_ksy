@@ -37,7 +37,7 @@
         - id: magic
           type: magic
         - id: is_big_endian
-          type: b1
+          type: u1
         - id: pointer_size_in_bits
           type: u1
         - id: pointer_alignment
@@ -95,10 +95,16 @@
         - id: unk4c
           type: u4
           doc: "unknown runtime pointer"
-      instances:  
-        section_manifest:  
-          pos: 0x50  
+        - id: section_manifest
           type: rx2_sections::arena_section_manifest  
+          doc: "unknown runtime pointer"
+      instances:
+        dictionary:
+          pos: dict_start_offset
+          type: dict_entry
+          repeat: expr
+          repeat-expr: num_entries
+          if: num_entries > 0 and dict_start_offset != 0
 
     dict_entry:  
       seq:  
@@ -121,12 +127,4 @@
           type:  
             switch-on: resolved_type  
             cases:  
-              'rx2_enums::arena_object_type::rwgobjecttype_raster': rx2_object_types::raster_object_type  
-
-  instances:
-    dictionary:
-      pos: arena.dict_start_offset
-      type: dict_entry
-      repeat: expr
-      repeat-expr: arena.num_entries
-      if: arena.num_entries > 0 and arena.dict_start_offset != 0
+              'rx2_enums::arena_object_type::rwgobjecttype_raster': rx2_object_types::raster_object_type
