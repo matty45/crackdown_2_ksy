@@ -35,12 +35,11 @@ types:
         enum: rx2_enums::arena_object_type  
       - id: num_entries  
         type: u4  
-      - id: reserved_1
+      - id: num_subrefs
         type: u4  
-        doc: "Runtime-only cache pointer"  
-      - id: reserved_2 
+      - id: dict_ptr 
         type: u4  
-        doc: "Runtime-only cache pointer"  
+        doc: "Runtime-only pointer"  
         
   arena_section_external_arenas:  
     doc: "External arena references"  
