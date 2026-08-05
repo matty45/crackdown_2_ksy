@@ -15,8 +15,58 @@
     Based on RenderWare 4 (RW4) arena system.
 
   seq:
-    - id: arena
-      type: arena
+    - id: header
+      type: arena_file_header
+    - id: id
+      type: u4
+    - id: num_entries
+      type: u4
+    - id: num_used
+      type: u4
+    - id: alignment
+      type: u4
+    - id: virt
+      type: u4
+      doc: Virtual address base (usually 0)
+    - id: dict_start_offset
+      type: u4
+      doc: "Offset from arena base (this struct start) to dictionary"
+    - id: sections_offset
+      type: u4
+      doc: "Runtime pointer to section manifest (0 in file, set at runtime)"
+    - id: section_types_offset
+      type: u4
+      doc: "Runtime pointer to section types (0 in file, set at runtime)"
+    - id: section_external_arenas_offset
+      type: u4
+      doc: "Runtime unfix context pointer (0 in file)"
+    - id: section_subreferences_offset
+      type: u4
+      doc: "Runtime fixup context pointer (0 in file)"
+    - id: unk44
+      type: u4
+      doc: |
+        "Seems to be a direct offset to the 3rd dictentry on most rx2 files 
+        (48% of them all), doesnt do that on others."
+    - id: base_ptr
+      type: u4
+      doc: |  
+        Runtime self-pointer: set by the game to the in-memory  
+        address of this Arena struct itself. Always 0 in the file on disk;  
+        populated only after the arena is loaded/initialized at runtime.
+    - id: unk4c
+      type: u4
+      doc: "unknown runtime pointer"
+    - id: section_manifest
+      type: rx2_sections::arena_section_manifest  
+      doc: "unknown runtime pointer"
+  instances:
+    dictionary:
+      pos: dict_start_offset
+      type: dict_entry
+      repeat: expr
+      repeat-expr: num_entries
+      if: num_entries > 0 and dict_start_offset != 0
 
   types:
     magic:
@@ -51,60 +101,6 @@
         - id: build_no
           type: u4
 
-    arena:
-      seq:
-        - id: header
-          type: arena_file_header
-        - id: id
-          type: u4
-        - id: num_entries
-          type: u4
-        - id: num_used
-          type: u4
-        - id: alignment
-          type: u4
-        - id: virt
-          type: u4
-          doc: Virtual address base (usually 0)
-        - id: dict_start_offset
-          type: u4
-          doc: "Offset from arena base (this struct start) to dictionary"
-        - id: sections_offset
-          type: u4
-          doc: "Runtime pointer to section manifest (0 in file, set at runtime)"
-        - id: section_types_offset
-          type: u4
-          doc: "Runtime pointer to section types (0 in file, set at runtime)"
-        - id: section_external_arenas_offset
-          type: u4
-          doc: "Runtime unfix context pointer (0 in file)"
-        - id: section_subreferences_offset
-          type: u4
-          doc: "Runtime fixup context pointer (0 in file)"
-        - id: unk44
-          type: u4
-          doc: |
-            "Seems to be a direct offset to the 3rd dictentry on most rx2 files 
-            (48% of them all), doesnt do that on others."
-        - id: base_ptr
-          type: u4
-          doc: |  
-            Runtime self-pointer: set by the game to the in-memory  
-            address of this Arena struct itself. Always 0 in the file on disk;  
-            populated only after the arena is loaded/initialized at runtime.
-        - id: unk4c
-          type: u4
-          doc: "unknown runtime pointer"
-        - id: section_manifest
-          type: rx2_sections::arena_section_manifest  
-          doc: "unknown runtime pointer"
-      instances:
-        dictionary:
-          pos: dict_start_offset
-          type: dict_entry
-          repeat: expr
-          repeat-expr: num_entries
-          if: num_entries > 0 and dict_start_offset != 0
 
     dict_entry:  
       seq:  
@@ -120,7 +116,7 @@
           type: u4  
       instances:  
         resolved_type:  
-          value: _root.arena.section_manifest.offsets[0].value.as<rx2_sections::arena_section_types>.type_codes[type_index]  
+          value: _root.section_manifest.offsets[0].value.as<rx2_sections::arena_section_types>.type_codes[type_index]  
         body:  
           pos: ptr  
           size: size  
