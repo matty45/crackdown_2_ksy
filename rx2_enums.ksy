@@ -187,3 +187,58 @@ enums:
       0x00eb0070: rwobjecttype_visualindicatorsubref  
       0x00ec0010: arenadictionary  
       0x7fffffff: forcenumsizeint
+
+  vertex_format:  
+      0x2c83a4: vertexformat_float1  
+      0x2c23a5: vertexformat_float2  
+      0x2a23b9: vertexformat_float3  
+      0x1a23a6: vertexformat_float4  
+      0x2c83a1: vertexformat_int1  
+      0x2c23a2: vertexformat_int2  
+      0x1a23a3: vertexformat_int4  
+      0x2c82a1: vertexformat_uint1  
+      0x2c22a2: vertexformat_uint2  
+      0x1a22a3: vertexformat_uint4  
+      0x2c81a1: vertexformat_int1n  
+      0x2c21a2: vertexformat_int2n  
+      0x1a21a3: vertexformat_int4n  
+      0x2c80a1: vertexformat_uint1n  
+      0x2c20a2: vertexformat_uint2n  
+      0x1a20a3: vertexformat_uint4n  
+      0x182886: vertexformat_d3dcolor  
+      0x1a2286: vertexformat_ubyte4  
+      0x1a2386: vertexformat_byte4  
+      0x1a2086: vertexformat_ubyte4n  
+      0x1a2186: vertexformat_byte4n  
+      0x2c2359: vertexformat_short2  
+      0x1a235a: vertexformat_short4  
+      0x2c2259: vertexformat_ushort2  
+      0x1a225a: vertexformat_ushort4  
+      0x2c2159: vertexformat_short2n  
+      0x1a215a: vertexformat_short4n  
+      0x2c2059: vertexformat_ushort2n  
+      0x1a205a: vertexformat_ushort4n  
+      0x2a2287: vertexformat_udec3  
+      0x2a2387: vertexformat_dec3  
+      0x2a2087: vertexformat_udec3n  
+      0x2a2187: vertexformat_dec3n  
+      # NOTE: vertexformat_udec4 (0x1a2287), vertexformat_dec4 (0x1a2387),  
+      # vertexformat_udec4n (0x1a2087), vertexformat_dec4n (0x1a2187)  
+      # collide with ubyte4/byte4/ubyte4n/byte4n values above and cannot  
+      # both be represented as unique enum keys in Kaitai Struct (enum  
+      # maps are numeric-key -> name, one name per value). Duplicate  
+      # numeric values must be resolved manually/renamed if you need both.  
+      0x2a2290: vertexformat_uhend3  
+      0x2a2390: vertexformat_hend3  
+      0x2a2090: vertexformat_uhend3n  
+      0x2a2190: vertexformat_hend3n  
+      0x2a2291: vertexformat_udhen3  
+      0x2a2391: vertexformat_dhen3  
+      0x2a2091: vertexformat_udhen3n  
+      0x2a2191: vertexformat_dhen3n  
+      0x2c235f: vertexformat_float16_2  
+      0x1a2360: vertexformat_float16_4  
+      0x014c86: vertexformat_color  
+      0xffffffff: vertexformat_unused  
+      # vertexformat_forceenumsizeint (0x7fffffff) is a C++ enum sizing  
+      # hack, not a real value — omitted here.

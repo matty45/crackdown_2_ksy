@@ -124,3 +124,4 @@
             switch-on: resolved_type  
             cases:  
               'rx2_enums::arena_object_type::rwgobjecttype_raster': rx2_object_types::raster_object_type
+              'rx2_enums::arena_object_type::rwgobjecttype_vdes': rx2_object_types::vertex_descriptor_object_type

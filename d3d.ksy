@@ -6,14 +6,7 @@ meta:
   endian: be  
   
 types:  
-  d3d_base_texture:  
-    doc: |  
-      Xbox 360 D3DBaseTexture (52 bytes / 0x34).  
-      Inherits D3DResource (24 bytes / 0x18: Common..BaseFlush),  
-      then adds MipFlush and the 24-byte GPUTEXTURE_FETCH_CONSTANT.  
-      XGOffsetBaseTextureAddress patches format.base_address (word1 bits[31:12])  
-      and format.mip_address (word5 bits[31:12]) at load time to point into  
-      physical_data. Mip address is only patched when format.max_mip_level > 0.  
+  d3d_resource:  
     seq:  
       - id: common  
         type: u4  
@@ -29,7 +22,19 @@ types:
       - id: identifier  
         type: u4  
       - id: base_flush  
-        type: u4  
+        type: u4
+
+  d3d_base_texture:  
+    doc: |  
+      Xbox 360 D3DBaseTexture (52 bytes / 0x34).  
+      Inherits D3DResource (24 bytes / 0x18: Common..BaseFlush),  
+      then adds MipFlush and the 24-byte GPUTEXTURE_FETCH_CONSTANT.  
+      XGOffsetBaseTextureAddress patches format.base_address (word1 bits[31:12])  
+      and format.mip_address (word5 bits[31:12]) at load time to point into  
+      physical_data. Mip address is only patched when format.max_mip_level > 0.  
+    seq:  
+      - id: resource  
+        type: d3d_resource
       - id: mip_flush  
         type: u4  
       - id: format  
@@ -92,7 +97,8 @@ types:
               word1 = (word1 & 0xFFF) | (pBaseAddress + (word1 & 0xFFFFF000)) & 0xFFFFF000  
           Zero in the file before relocation.  
           Also accessible as D3DResource pThis[1].Fence (offset 0x20 from  
-          D3DBaseTexture base), where bit 10 = Stacked (array texture flag).  
+          D3DBaseTexture base), where bit 10 = Stacked (array texture flag).
+          In rx2 files, these point to the dict entry index of the raw texture data this belongs to.
       - id: clamp_policy  
         type: b1  
         doc: "BitPos=11. Clamp policy (0 = D3D, 1 = OGL)."  
