@@ -464,3 +464,77 @@ enums:
     0x01: 'abgr_white'  
     0x02: 'acbycr_black'  
     0x03: 'acbcry_black'
+
+  d3ddeclusage:  
+    0: position  
+    1: blendweight  
+    2: blendindices  
+    3: normal  
+    4: psize  
+    5: texcoord  
+    6: tangent  
+    7: binormal  
+    8: tessfactor  
+    10: color  
+    11: fog  
+    12: depth  
+    13: sample
+
+  d3ddecltype:  
+    0x2C83A4: float1  
+    0x2C23A5: float2  
+    0x2A23B9: float3  
+    0x1A23A6: float4  
+    0x2C83A1: int1  
+    0x2C23A2: int2  
+    0x1A23A3: int4  
+    0x2C82A1: uint1  
+    0x2C22A2: uint2  
+    0x1A22A3: uint4  
+    0x2C81A1: int1n  
+    0x2C21A2: int2n  
+    0x1A21A3: int4n  
+    0x2C80A1: uint1n  
+    0x2C20A2: uint2n  
+    0x1A20A3: uint4n  
+    0x182886: d3dcolor  
+    0x1A2286: ubyte4  
+    0x1A2386: byte4  
+    0x1A2086: ubyte4n  
+    0x1A2186: byte4n  
+    0x2C2359: short2  
+    0x1A235A: short4  
+    0x2C2259: ushort2  
+    0x1A225A: ushort4  
+    0x2C2159: short2n  
+    0x1A215A: short4n  
+    0x2C2059: ushort2n  
+    0x1A205A: ushort4n  
+    0x2A2287: udec3  
+    0x2A2387: dec3  
+    0x2A2087: udec3n  
+    0x2A2187: dec3n  
+    0x1A2287: udec4  
+    0x1A2387: dec4  
+    0x1A2087: udec4n  
+    0x1A2187: dec4n  
+    0x2A2290: uhend3  
+    0x2A2390: hend3  
+    0x2A2090: uhend3n  
+    0x2A2190: hend3n  
+    0x2A2291: udhen3  
+    0x2A2391: dhen3  
+    0x2A2091: udhen3n  
+    0x2A2191: dhen3n  
+    0x2C235F: float16_2  
+    0x1A2360: float16_4  
+    0xFFFFFFFF: unused
+
+  d3ddeclmethod:  
+    0: default  
+    1: partialu  
+    2: partialv  
+    3: crossuv  
+    4: uv  
+    5: lookup  
+    6: lookuppresampled
