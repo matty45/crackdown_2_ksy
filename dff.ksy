@@ -10,9 +10,8 @@ doc: |
   This file format is used to store both
   game assets and metadata that is used by the game or its editor.
 
-  A dff file is sometimes? or always accompanied by a .resblock file
-  which stores large assets that for some
-  reason cannot fit into the dff itself.
+  A dff file is always accompanied by a .resblock file
+  which stores large assets that are used for streaming.
 
 seq:
   - id: rw_stream
