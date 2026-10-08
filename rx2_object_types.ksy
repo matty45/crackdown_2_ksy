@@ -267,58 +267,19 @@ types:
     seq:
       - id: flags
         type: u4
-      - id: num_embedded_objects
+      - id: num_meshes
         type: u4
-      - id: end_of_embedded
+      - id: end_ptr
         type: u4
-      - id: field_0c
+      - id: sync_flags
         type: u4
-      - id: field_10
-        type: u4
-      - id: field_14
-        type: u4
-      - id: field_18
-        type: u4
-      - id: field_1c
-        type: u4
-      - id: field_20
-        type: u4
-      - id: field_24
-        type: u4
-      - id: field_28
-        type: u4
-      - id: field_2c
-        type: u4
-      - id: field_30
-        type: u4
-      - id: field_34
-        type: u4
-      - id: field_38
-        type: u4
-      - id: field_3c
-        type: u4
-      - id: field_40
-        type: u4
-      - id: field_44
-        type: u4
-      - id: field_48
-        type: u4
-      - id: field_4c
-        type: u4
-      - id: field_50
-        type: u4
-      - id: field_54
-        type: u4
-      - id: field_58
-        type: u4
-      - id: field_5c
-        type: u4
-      - id: field_60
-        type: u4
-      - id: field_64
-        type: u4
-      - id: field_68
-        type: u4
+        repeat: expr
+        repeat-expr: 24
+        doc: |
+          24 dwords (0x0C-0x68) = 96 bytes of per-mesh state sync flags.
+          Includes additionalSoftStateSync, additionalRenderStateSync[7],
+          additionalRasterPaletteSync, additionalTextureStageStateSync[17],
+          additionalSamplerStateSync[17]
       - id: embedded_chain
         size-eos: true
         doc: |
