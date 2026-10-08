@@ -9,32 +9,6 @@ meta:
     - rx2_sections
     - rx2_object_types
 
-doc: |
-  Evidence-backed Crackdown 2 RX2 arena schema.
-
-  The file is a big-endian RenderWare 4 memory-dump arena. Internal serialized
-  pointers are offsets relative to the author's arena base; the values at
-  0x34..0x40 are stale host pointers and must not be interpreted as file
-  offsets. Arena::FixupStart rebases the serialized pointers at load time.
-
-  Corpus-backed facts:
-    * file header: 28 bytes, 0x00..0x1B
-    * arena header: 52 bytes, 0x1C..0x4F
-    * section manifest begins at 0x50
-    * dictionary entries are 20 bytes
-    * numEntries == numUsed in the analyzed corpus
-    * dictionary type_index resolves through the per-arena SectionTypes array
-    * type-index 0 is RWOBJECTTYPE_NULL in CD2; Vertex/Index/Raster data blobs
-      are therefore stored as type-0 Buffer payloads
-    * the object area is gap-free and non-overlapping
-    * the trailing compiled/GPU region is structurally framed far better than the
-      old "opaque CBUF" label suggested; command-buffer framing is known, while
-      some non-first CompiledState residue remains intentionally raw.
-    * VertexBuffer+0x1C is a fetch descriptor whose size field is the 32-byte-aligned
-      serialized vertex-buffer byte size.
-    * CompiledState+0x0C is a sampler-slot bitmask; one tagged texture-reference
-      word is serialized for each set bit.
-
 seq:
   - id: header
     type: arena_file_header
@@ -207,7 +181,7 @@ types:
             'rx2_enums::arena_object_type::objecttype_keyframeanim': raw_payload
             'rx2_enums::arena_object_type::objecttype_skeleton': rx2_object_types::skeleton_object
             'rx2_enums::arena_object_type::objecttype_skeletonsink': rx2_object_types::skeleton_sink_object
-            'rx2_enums::arena_object_type::objecttype_c2_vehicle_unknown': raw_payload
+            'rx2_enums::arena_object_type::objecttype_c2_vehicle_component': rx2_object_types::c2_vehicle_component
             _: raw_payload
 
   buffer_object:

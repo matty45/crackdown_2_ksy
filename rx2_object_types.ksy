@@ -286,3 +286,64 @@ types:
           Starts at +0x70. Actual records are 16-aligned and alternate
           CompiledState records and optional 24-byte Mesh records. The exact
           flag-driven slot payload of each CompiledState is parsed separately.
+
+  c2_vehicle_component:
+    doc: |
+      Serialized Crackdown 2 vehicle damage component used by object type 0x00070012.
+      Corpus evidence from helicopter and ABus RX2s shows a common component header,
+      followed by a variable morph-name table and then component-specific payload.
+      The first word is currently treated as the serialized vehicle component ID
+      (runtime m_CCID); this identification is high-confidence but not yet proven
+      against the serializer implementation.
+    seq:
+      - id: component_id
+        type: u4
+        doc: Likely serialized m_CCID; observed values include 0x54, 0x55 and 0x57.
+      - id: reserved_04
+        type: u4
+        doc: Observed as 0xffffffff in the recovered 0x70012 vehicle objects.
+      - id: reserved_08
+        type: u4
+        doc: Observed as 0x0000000c in the recovered 0x70012 vehicle objects.
+      - id: num_morph_sections
+        type: u4
+        doc: |
+          Serialized morph-section count. Matches the number of DMG_* morph names
+          in the object; runtime cComponent::m_nNumMorphSections is an uint8.
+      - id: morph_block_size
+        type: u4
+        doc: Observed as 0x28 in the recovered vehicle component objects.
+      - id: reserved_14
+        type: u4
+      - id: reserved_18
+        type: u4
+      - id: morph_names_start
+        type: u4
+        doc: Object-relative offset to the beginning of the morph-name string table.
+      - id: morph_names_start_2
+        type: u4
+        doc: Duplicate/parallel object-relative morph-name table offset.
+      - id: morph_names_end
+        type: u4
+        doc: Object-relative end offset of the morph-name string table.
+      - id: morph_name_offsets_start
+        type: u4
+        doc: Object-relative offset identifying the start of the morph-name offset area.
+      - id: morph_name_offsets
+        type: u4
+        repeat: expr
+        repeat-expr: num_morph_sections - 1
+        if: num_morph_sections > 1
+        doc: |
+          For N morph sections, the first morph name starts at morph_names_start;
+          N-1 subsequent object-relative offsets point to the remaining names.
+      - id: morph_names
+        size: morph_names_end - morph_names_start
+        doc: |
+          Null-terminated DMG_* morph names. The first name begins at
+          morph_names_start; subsequent names correspond to morph_name_offsets.
+      - id: component_payload
+        size-eos: true
+        doc: |
+          Remaining serialized vehicle-component data. Its exact subclass-specific
+          grammar is not yet established; retain it verbatim for now.

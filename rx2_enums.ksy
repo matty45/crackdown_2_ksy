@@ -103,7 +103,7 @@ enums:
     0x0007000f: objecttype_skinmatrixbuffer
     0x00070010: objecttype_tweakcontroller
     0x00070011: objecttype_shadersink
-    0x00070012: objecttype_c2_vehicle_unknown
+    0x00070012: objecttype_c2_vehicle_component
 
     0x00080000: rwcobjecttype_na
     0x00080001: rwcobjecttype_volume
